@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduAssist – Ministry of Education, Liberia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--red:#BF1E2E;--blue:#002868;--white:#FAFAF8;--sand:#F0EBE1;--text:#1C1C2E;--muted:#6B7280;--border:#DDD5C8;--shadow:0 4px 28px rgba(0,40,104,0.09)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--text);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+header{background:var(--blue);display:flex;align-items:center;gap:14px;padding:0 20px;height:68px;flex-shrink:0;box-shadow:0 2px 20px rgba(0,0,0,.22)}
+.flag{flex-shrink:0;width:42px;height:28px;border-radius:3px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.35);position:relative}
+.flag .stripes{display:flex;flex-direction:column;height:100%}
+.flag .s{flex:1}.flag .r{background:#BF1E2E}.flag .w{background:#fff}
+.flag .canton{position:absolute;top:0;left:0;width:14px;height:17px;background:#002868;display:flex;align-items:center;justify-content:center}
+.flag .canton span{color:#fff;font-size:7px}
+.ht{flex:1;min-width:0}
+.ht h1{font-family:'Playfair Display',serif;color:#fff;font-size:1.05rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ht p{color:rgba(255,255,255,.55);font-size:.67rem;text-transform:uppercase;letter-spacing:.07em;font-weight:300;margin-top:1px}
+.badge{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 10px;flex-shrink:0}
+.dot{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
+.badge span{color:rgba(255,255,255,.75);font-size:.68rem;font-weight:500}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+.body{flex:1;overflow:hidden;display:flex;flex-direction:column;max-width:820px;width:100%;margin:0 auto;padding:0 14px}
+.chips{display:flex;gap:7px;flex-wrap:nowrap;overflow-x:auto;padding:11px 0 5px;scrollbar-width:none;flex-shrink:0}
+.chips::-webkit-scrollbar{display:none}
+.chip{background:var(--white);border:1.5px solid var(--border);border-radius:20px;padding:5px 13px;font-size:.74rem;font-weight:500;color:var(--blue);cursor:pointer;white-space:nowrap;transition:all .17s ease;flex-shrink:0}
+.chip:hover{background:var(--blue);color:#fff;border-color:var(--blue);transform:translateY(-1px)}
+.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:4px 0 10px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.msgs::-webkit-scrollbar{width:4px}
+.msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.welcome{background:linear-gradient(140deg,var(--blue) 0%,#1a4096 100%);border-radius:18px;padding:24px 24px 20px;color:#fff;position:relative;overflow:hidden;animation:fadeUp .45s ease both}
+.welcome::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:rgba(255,255,255,.05);border-radius:50%}
+.welcome::after{content:'';position:absolute;bottom:-30px;left:40px;width:100px;height:100px;background:rgba(191,30,46,.25);border-radius:50%}
+.welcome .icon{font-size:2.2rem;margin-bottom:10px;display:block}
+.welcome h2{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:8px;position:relative;z-index:1}
+.welcome h2 em{font-style:normal;background:var(--red);padding:0 7px;border-radius:4px}
+.welcome p{font-size:.84rem;opacity:.85;line-height:1.65;position:relative;z-index:1;font-weight:300}
+.facts{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap;position:relative;z-index:1}
+.fact{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:5px 10px;font-size:.71rem;font-weight:500}
+.msg{display:flex;gap:9px;align-items:flex-end;animation:fadeUp .28s ease both}
+.msg.user{flex-direction:row-reverse}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.av.bot{background:var(--blue);color:#fff;font-size:1rem}
+.av.usr{background:var(--red);color:#fff;font-size:.68rem;font-weight:700}
+.bubble{max-width:74%;padding:11px 15px;border-radius:16px;font-size:.875rem;line-height:1.68}
+.bubble.bot{background:var(--white);border:1px solid var(--border);border-bottom-left-radius:4px;box-shadow:var(--shadow);color:var(--text)}
+.bubble.usr{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+.typing{display:flex;gap:5px;padding:12px 16px;align-items:center}
+.typing span{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:bob 1.1s infinite}
+.typing span:nth-child(2){animation-delay:.18s}.typing span:nth-child(3){animation-delay:.36s}
+@keyframes bob{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.iw{flex-shrink:0;padding:8px 0 12px}
+.ibox{background:var(--white);border:1.5px solid var(--border);border-radius:14px;display:flex;align-items:flex-end;gap:8px;padding:9px 9px 9px 15px;box-shadow:var(--shadow);transition:border-color .2s}
+.ibox:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,40,104,.07),var(--shadow)}
+textarea{flex:1;border:none;outline:none;resize:none;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:transparent;line-height:1.5;min-height:38px;max-height:110px;padding:3px 0}
+textarea::placeholder{color:#b0a898}
+.send{width:42px;height:42px;background:var(--blue);border:none;border-radius:11px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .17s ease;font-size:1rem}
+.send:hover:not(:disabled){background:var(--red);transform:scale(1.06)}
+.send:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+.note{text-align:center;font-size:.67rem;color:var(--muted);padding:4px 0 2px}
+@media(max-width:580px){.bubble{max-width:88%}.welcome h2{font-size:1.1rem}header{height:58px}.ht h1{font-size:.88rem}.badge{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="flag">
+    <div class="stripes"><div class="s r"></div><div class="s w"></div><div class="s r"></div><div class="s w"></div><div class="s r"></div></div>
+    <div class="canton"><span>★</span></div>
+  </div>
+  <div class="ht">
+    <h1>EduAssist — Ministry of Education, Republic of Liberia</h1>
+    <p>Show The Light, The People Will Find The Way · moe.gov.lr</p>
+  </div>
+  <div class="badge"><div class="dot"></div><span>Live</span></div>
+</header>
+<div class="body">
+  <div class="chips">
+    <div class="chip" onclick="ask('How do I apply for a scholarship from the Ministry of Education?')">🎓 Scholarships</div>
+    <div class="chip" onclick="ask('How do I register for WAEC exams — LPSCE, LJHSCE or LSHSCE?')">📝 WAEC Exams</div>
+    <div class="chip" onclick="ask('How do I check my WAEC exam results?')">✅ Check Results</div>
+    <div class="chip" onclick="ask('How can I download the national curriculum?')">📚 Curriculum</div>
+    <div class="chip" onclick="ask('Tell me about the EXCEL Project — the $88.7 million investment')">💡 EXCEL Project</div>
+    <div class="chip" onclick="ask('What international scholarships are available for Liberian students?')">🌍 Intl. Scholarships</div>
+    <div class="chip" onclick="ask('Who is the Minister of Education of Liberia?')">👩‍💼 The Minister</div>
+    <div class="chip" onclick="ask('What TVET and teacher training programs are available?')">👩‍🏫 Teacher & TVET</div>
+    <div class="chip" onclick="ask('What is the Education Sector Plan 2022–2027?')">📋 ESP 2022–27</div>
+    <div class="chip" onclick="ask('Who are the development partners of the Ministry of Education?')">🤝 Partners</div>
+    <div class="chip" onclick="ask('What are the latest news and initiatives from the Ministry of Education?')">📰 Latest News</div>
+    <div class="chip" onclick="ask('What is the Ministry of Education hotline and contact information?')">📞 Contact MoE</div>
+  </div>
+  <div class="msgs" id="msgs">
+    <div class="welcome">
+      <span class="icon">🇱🇷</span>
+      <h2>Welcome to <em>EduAssist</em></h2>
+      <p>Your official AI assistant for the <strong>Ministry of Education, Republic of Liberia</strong>. Ask me about WAEC exams, scholarships, curriculum, MoE projects, teacher training, TVET, and all official education policies.</p>
+      <div class="facts">
+        <div class="fact">📞 Hotline: 1144</div>
+        <div class="fact">📧 contact@moe.gov.lr</div>
+        <div class="fact">🏢 Congo Town, Monrovia</div>
+        <div class="fact">⏰ Mon–Fri 9AM–5PM</div>
+        <div class="fact">🌐 moe.gov.lr</div>
+        <div class="fact">📋 waecliberia.org.lr</div>
+      </div>
+    </div>
+  </div>
+  <div class="iw">
+    <div class="ibox">
+      <textarea id="txt" placeholder="Ask about WAEC, scholarships, curriculum, projects…" rows="1" onkeydown="onKey(event)" oninput="resize(this)"></textarea>
+      <button class="send" id="sendBtn" onclick="send()">➤</button>
+    </div>
+    <div class="note">EduAssist uses official MoE & WAEC Liberia data. For official matters call 1144 or email contact@moe.gov.lr</div>
+  </div>
+</div>
+<script>
+const GEMINI_KEY = 'AIzaSyBJE5R6I9MvWJW9Ffa0eBbf8In92d8taU0';
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+
+const SYSTEM = `You are EduAssist — the official AI knowledge assistant for the Ministry of Education (MoE) of the Republic of Liberia. Motto: "Show The Light, The People Will Find The Way." Be warm, clear, encouraging and culturally respectful. Only answer education-related questions about Liberia.
+
+MoE CONTACT: Website: moe.gov.lr | Email: contact@moe.gov.lr | Hotline: 1144 | Address: Congo Town, Montserrado County | Hours: Mon-Fri 9AM-5PM
+
+MINISTER: Dr. Jarso Maley Jallah — confirmed Feb 6, 2024. EdD Educational Leadership, Delaware State University. 23-year career in education.
+
+FAQs: Curriculum → moe.gov.lr/curriculum-download/ | Scholarships → moescholarship.org | Hotline → 1144
+
+WAEC EXAMS (waecliberia.org.lr):
+Results: result.liberiareg.org | School reg: schoolreg.liberiareg.org | Private: privatereg.liberiareg.org
+- LPSCE (Grade 6, May): Maths, Science, Language Arts, Social Studies. CASS 40%/TASS 60%. Pass 3/4.
+- LJHSCE (Grade 9, May): Same 4 subjects. CASS 40%/TASS 60%. Pass 3/4.
+- LSHSCE Regular (Grade 12): Core=English+Maths, General=Economics/Geography/History/Literature, Science=Biology/Chemistry/Physics. Min 8 subjects. CASS 30%/TASS 70%. Grades 1-9 (1=Excellent,9=Fail). Division I≤24, II=25-36, III=37-48.
+- LSHSCE Private: Adults/past students → privatereg.liberiareg.org
+
+SCHOLARSHIPS (moescholarship.org): Local annual + International from China, Japan, Germany, Turkey, Egypt, Morocco, Indonesia, Bangladesh, Saudi Arabia, Hungary, India, Cuba, USA, Thailand, Colombia, Slovakia, Azerbaijan, Mauritius, Austria, Tunisia, Mexico, Israel, EU, Mastercard Foundation.
+
+KEY PROJECTS: EXCEL ($88.7M Feb 2026 foundational education), IRISE (World Bank secondary), School Connect (WFP May 2026), Digital Learning Platform (Dec 2025), Hygiene Kits (Jan 2026), Science Kits (Jan 2026), One Child One Chair, ESP 2022-2027, AFTRA 2027.
+
+EDUCATION LEVELS: Early Childhood → Primary (1-6, LPSCE) → Junior High (7-9, LJHSCE) → Senior High (10-12, LSHSCE) → TVET → Higher Ed (ncheliberia.org)
+
+PARTNERS: World Bank, GPE, UNICEF, EU, USAID, UNESCO, NCHE, Rising Academy, Bridge Liberia, UMovement, KEEP, AfDB, WFP.
+
+Always direct: scholarships→moescholarship.org, curriculum→moe.gov.lr/curriculum-download/, WAEC→waecliberia.org.lr, unknown→1144 or contact@moe.gov.lr. Only answer Liberia education questions.`;
+
+let history = [];
+
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}
+function resize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'}
+function ask(t){document.getElementById('txt').value=t;send()}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmt(s){return esc(s).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>')}
+function scroll(){const m=document.getElementById('msgs');m.scrollTop=m.scrollHeight}
+function addUser(t){
+  const m=document.getElementById('msgs'),d=document.createElement('div');
+  d.className='msg user';
+  d.innerHTML=`<div class="av usr">YOU</div><div class="bubble usr">${esc(t)}</div>`;
+  m.appendChild(d);scroll();
+}
+function addBot(t){
+  const m=document.getElementById('msgs'),d=document.createElement('div');
+  d.className='msg';
+  d.innerHTML=`<div class="av bot">🇱🇷</div><div class="bubble bot">${fmt(t)}</div>`;
+  m.appendChild(d);scroll();
+}
+function showTyping(){
+  const m=document.getElementById('msgs'),d=document.createElement('div');
+  d.className='msg';d.id='typing';
+  d.innerHTML=`<div class="av bot">🇱🇷</div><div class="bubble bot"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  m.appendChild(d);scroll();
+}
+function removeTyping(){const t=document.getElementById('typing');if(t)t.remove()}
+
+async function send(){
+  const txt=document.getElementById('txt'),t=txt.value.trim();
+  if(!t)return;
+  txt.value='';txt.style.height='auto';
+  document.getElementById('sendBtn').disabled=true;
+  addUser(t);
+  history.push({role:'user',parts:[{text:t}]});
+  showTyping();
+  try{
+    const res=await fetch(API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system_instruction:{parts:[{text:SYSTEM}]},
+        contents:history,
+        generationConfig:{maxOutputTokens:1000,temperature:0.7}
+      })
+    });
+    const data=await res.json();
+    removeTyping();
+    if(data.error){
+      addBot(`⚠️ Error: ${data.error.message}`);
+    } else {
+      const reply=data.candidates[0].content.parts[0].text;
+      history.push({role:'model',parts:[{text:reply}]});
+      addBot(reply);
+    }
+  }catch(err){
+    removeTyping();
+    addBot("⚠️ Connection error. Please check your internet or contact MoE at 1144 or contact@moe.gov.lr");
+  }
+  document.getElementById('sendBtn').disabled=false;
+}
+</script>
+</body>
+</html>
